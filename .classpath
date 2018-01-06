@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/JDA-3.4.0_317.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jna-4.5.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jar_files/okhttp-3.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jar_files/okio-1.13.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jar_files (1)/nv-websocket-client-2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jar_files (2)/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/commons-collections4-4.1-bin/commons-collections4-4.1/commons-collections4-4.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Dami/Downloads/commons-collections4-4.1-bin/commons-collections4-4.1/commons-collections4-4.1-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/trove-3.0.3.jar/trove-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jar_files (3)/json-20160810.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
