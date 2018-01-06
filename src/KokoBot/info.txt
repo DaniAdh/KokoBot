@@ -2,6 +2,6 @@
 -rcreate <rolename> <category> [hex] <description>
 -rscreate <rolename> <category> [hex] <description>
 -rsadd <rolename>
--rinfo (displays info of all roles that arent self-assignable)
+-rinfo [category] (displays info of all roles that arent self-assignable)
 -rsinfo [category] (displays info of all self-assignable roles. Able to be narrowed 
 					down to a specific category)
