@@ -15,8 +15,10 @@ public class CommandManager {
 	private static List<Command> Commands = new LinkedList<Command>();
 	
 	public static void InitializeCommands() {
-		Commands.add(new GenericCommand("hello", (event) -> event.getChannel().sendMessage(new MessageBuilder().append("Hey there!").build()).complete()));
-		/*Commands.add(new GenericCommand("rcreate", new GenericEventFunctional() {
+		Commands.add(new GenericCommand("Hello", (event) -> event.getChannel().sendMessage(new MessageBuilder().append("Hey there!").build()).complete()));
+		Commands.add(new GenericCommand("Ping", (event) -> event.getChannel().sendMessage(new MessageBuilder().append("Pong").build()).complete()));
+		/*
+		Commands.add(new GenericCommand("rcreate", new GenericEventFunctional() {
 
 			@Override
 			public void onEvent(MessageReceivedEvent event) {
