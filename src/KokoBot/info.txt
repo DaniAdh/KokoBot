@@ -1,7 +1,9 @@
 'r' = role, 's' = self
--rcreate <rolename> <category> [hex] <description>
--rscreate <rolename> <category> [hex] <description>
+-rcreate <rolename> <category> [hex] <description> (only admins)
+-rscreate <rolename> <category> [hex] <description> (only admins)
 -rsadd <rolename>
 -rinfo [category] (displays info of all roles that arent self-assignable)
 -rsinfo [category] (displays info of all self-assignable roles. Able to be narrowed 
 					down to a specific category)
+-command <command name> <channel> (makes commands only work in certain channels. 
+                         command is used in wrong channel, display error message)
