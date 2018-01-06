@@ -19,7 +19,7 @@ public class RoleManager {
 			KokoBot.roles.add(new CategorisedRole(RoleCategory.Test,role, false));
 		}
 		
-		//BufferedWriter writer = new BufferedWriter(new FileWriter("Roles.txt"));
+
 		String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
 		BufferedReader reader = new BufferedReader(new FileReader(path+"src/KokoBot/Roles/Roles.txt"));
 		Object[] Roles = reader.lines().toArray();
@@ -33,7 +33,7 @@ public class RoleManager {
 			rolesDuplicate.removeAll(TextFileRoles);
 			BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
 			for(int i = 0;i<rolesDuplicate.size();i++) {
-				bf.append(rolesDuplicate.get(i).toString()+"\n");
+				bf.append(rolesDuplicate.get(i).toString()+(i==rolesDuplicate.size()-1? "" : "\n"));
 			}
 			bf.close();
 		}

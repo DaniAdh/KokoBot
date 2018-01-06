@@ -1,5 +1,7 @@
 package KokoBot.commands.commandTypes;
 
+import java.io.IOException;
+
 import KokoBot.commands.Command;
 import KokoBot.commands.commandTypes.GenericEventFunctional;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -21,7 +23,7 @@ public class GenericCommand implements Command{
 	}
 
 	@Override
-	public void onEvent(MessageReceivedEvent Message) {
+	public void onEvent(MessageReceivedEvent Message) throws IOException {
 		Event.onEvent(Message);
 		 
 	}

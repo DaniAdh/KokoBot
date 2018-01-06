@@ -40,7 +40,11 @@ public class KokoBot extends ListenerAdapter{
 		if(event.getAuthor().isBot() || !event.getChannel().getName().equals("bot")) {return;}
 		System.out.println(event.getGuild());
 		//gc.addSingleRoleToMember(guild.getMember(event.getAuthor()), guild.getRoleById("399132363809882112")).complete();
-		CommandManager.TestForCommands(event);
+		try {
+			CommandManager.TestForCommands(event);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		
 	}

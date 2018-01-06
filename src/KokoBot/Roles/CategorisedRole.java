@@ -28,12 +28,12 @@ public class CategorisedRole implements Serializable{
 		
 		Role foundRole = null;
 		for(CategorisedRole role:KokoBot.roles) {
-			if(role.role.getName()==a.split("\"'")[1]) {
+			if(role.role.getName()==a.split("\'")[1]) {
 				foundRole = role.role;
 			}
 		}
 		
-		return new CategorisedRole(RoleCategory.valueOf(Substrings[1]), foundRole, (Substrings[3]=="true"));
+		return new CategorisedRole(RoleCategory.valueOf(Substrings[0]), foundRole, (Substrings[2]=="true"));
 	}
 	
 	
