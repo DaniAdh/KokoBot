@@ -8,4 +8,5 @@
 -commandperm <command name> <enable/disable> <channel> (makes commands only work in certain channels. 
                          command is used in wrong channel, display error message)
 -autoresponder command that allows users to make an string of characters that the bot
-responds to with either more characters and/or an emote
+responds to with either more characters and/or an emote. it can also make it so if the string is 
+contained anywhere within the group of strings, a response will be made.
