@@ -1,0 +1,3 @@
+'r' = role, 's' = self
+-rcreate <rolename> <category> <description>
+-rscreate <rolename> <category> <description>
