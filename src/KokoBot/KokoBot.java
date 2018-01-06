@@ -1,4 +1,5 @@
 package KokoBot;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,14 +20,14 @@ import net.dv8tion.jda.core.managers.GuildController;
 public class KokoBot extends ListenerAdapter{	
 	private static String Token = "Mzk4OTQxNzUwMjMzOTIzNTg0.DTF3Sg.nWBqsqWHkVtg1r7jxG5UlM1weVU";
 	public static JDA jda;
-	public static String Prefix = "~";
+	public static String Prefix = "-";
 	public static Guild guild;
 	public static GuildController gc;
 	
 	public static List<CategorisedRole> roles = new LinkedList<CategorisedRole>();
 	
 	
-	public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, RateLimitedException {
+	public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, RateLimitedException, IOException {
 		jda = new JDABuilder(AccountType.BOT).setToken(Token).addEventListener(new KokoBot()).buildBlocking();
 		CommandManager.InitializeCommands();
 		guild = jda.getGuildById("398952343435083778");

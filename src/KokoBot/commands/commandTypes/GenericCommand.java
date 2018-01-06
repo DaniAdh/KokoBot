@@ -1,14 +1,15 @@
 package KokoBot.commands.commandTypes;
 
 import KokoBot.commands.Command;
-import KokoBot.commands.commandTypes.ReplyEventFunctional;
+import KokoBot.commands.commandTypes.GenericEventFunctional;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class ReplyCommand implements Command{
+public class GenericCommand implements Command{
 
 	String Name;
-	ReplyEventFunctional Event;
-	public ReplyCommand(String Name, ReplyEventFunctional Event) {
+	GenericEventFunctional Event;
+	public GenericCommand(String Name, GenericEventFunctional Event) {
 		this.Name = Name;
 		this.Event = Event;
 	}
