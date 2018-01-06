@@ -19,13 +19,21 @@ public class CategorisedRole implements Serializable{
 	}
 	
 	public String toString() {
-		return (Category.name() + " " + role.getName() + " " + Boolean.toString(IsSelfAssignable));
+		return (Category.name() + " \'" + role.getName() + "\' " + Boolean.toString(IsSelfAssignable));
 	}
 	
 	public static CategorisedRole fromString(String a) {
 		String[] Substrings = a.split(" "); 
 		
-		return null ;
+		
+		Role foundRole = null;
+		for(CategorisedRole role:KokoBot.roles) {
+			if(role.role.getName()==a.split("\"'")[1]) {
+				foundRole = role.role;
+			}
+		}
+		
+		return new CategorisedRole(RoleCategory.valueOf(Substrings[1]), foundRole, (Substrings[3]=="true"));
 	}
 	
 	

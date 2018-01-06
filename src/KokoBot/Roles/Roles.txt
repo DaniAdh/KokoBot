@@ -1,0 +1,3 @@
+Test 'KokoBot' false
+Test 'new role' false
+Test '@everyone' false

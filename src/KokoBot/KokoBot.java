@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.GuildController;
 
 public class KokoBot extends ListenerAdapter{	
-	private static String Token = "Mzk4OTQxNzUwMjMzOTIzNTg0.DTF3Sg.nWBqsqWHkVtg1r7jxG5UlM1weVU";
+	private static String Token = "Mzk4OTQxNzUwMjMzOTIzNTg0.DTKGmw.3Rpmwb5CleechxS2dV3CSstChws";
 	public static JDA jda;
 	public static String Prefix = "-";
 	public static Guild guild;
