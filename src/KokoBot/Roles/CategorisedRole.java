@@ -25,7 +25,7 @@ public class CategorisedRole implements Serializable{
 	public static CategorisedRole fromString(String a) {
 		String[] Substrings = a.split(" "); 
 		
-		return null;
+		return null ;
 	}
 	
 	

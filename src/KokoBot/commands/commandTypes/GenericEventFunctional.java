@@ -1,4 +1,4 @@
-package KokoBot.commands.commandTypes;
+ package KokoBot.commands.commandTypes;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

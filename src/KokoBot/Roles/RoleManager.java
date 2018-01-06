@@ -20,7 +20,7 @@ public class RoleManager {
 		//BufferedWriter writer = new BufferedWriter(new FileWriter("Roles.txt"));
 		BufferedReader reader = new BufferedReader(new FileReader("Roles.txt"));
 		reader.close();
-		System.out.println(KokoBot.roles.toString());
+		System.out.println(KokoBot.roles.toString()); 
 		
 		
 	}

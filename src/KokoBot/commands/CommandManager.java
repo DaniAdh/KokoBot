@@ -25,7 +25,7 @@ public class CommandManager {
 				boolean Exists = false;
 				for(CategorisedRole role:KokoBot.roles) {
 					if(role.role.getName()==Message.split(" ")[1]) {
-						Exists = true;
+						Exists = true; 
 						ExistingRole = role;
 						break;
 					}

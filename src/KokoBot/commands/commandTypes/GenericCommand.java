@@ -23,7 +23,7 @@ public class GenericCommand implements Command{
 	@Override
 	public void onEvent(MessageReceivedEvent Message) {
 		Event.onEvent(Message);
-		
+		 
 	}
 
 
