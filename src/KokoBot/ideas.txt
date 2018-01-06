@@ -1,0 +1,9 @@
+-welcome/goodbye
+-election system
+-bot that gathers all stats on a mentioned user such as:
+- number of images, links, media posts
+- number of messages
+- time online
+- time since last active
+- hot words like "nigga", "retard", "goatfucker", etc. to triggers a pm to mods to review 
+  and see if reactionary and if so, remove user from server
