@@ -16,6 +16,7 @@ public class CommandManager {
 	
 	public static void InitializeCommands() {
 		Commands.add(new GenericCommand("Hello", (event) -> event.getChannel().sendMessage(new MessageBuilder().append("Hey there!").build()).complete()));
+		Commands.add(new GenericCommand("Ping", (event) -> event.getChannel().sendMessage(new MessageBuilder().append("Pong").build()).complete()));
 		Commands.add(new GenericCommand("rcreate", new GenericEventFunctional() {
 
 			@Override
