@@ -29,6 +29,7 @@ public class CommandManager {
 				String Message = event.getMessage().getContentDisplay();
 				boolean Exists = false;
 				CategorisedRole ExistingRole = null;
+				
 				for(CategorisedRole role:KokoBot.roles) {
 					if(role.role.getName()==Message.split(" ")[1]) {
 						Exists = true;
@@ -36,22 +37,27 @@ public class CommandManager {
 						break;
 					}
 				}   
-				String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
-				BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
+				
+				
+				
 				if(Exists) {
-					KokoBot.roles.set(KokoBot.roles.indexOf(ExistingRole), CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],Message.split(" ")[1],false)));
+					String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
+					BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
+					KokoBot.roles.set(KokoBot.roles.indexOf(ExistingRole), CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',false)));
 					for(int i = 0;i<KokoBot.roles.size();i++) {
 						bf.write(KokoBot.roles.get(i).toString());
 					}
+					bf.close();
 				} else {
-					KokoBot.gc.createRole().setName(Message.split(" ")[1]).setColor(new Color(Integer.valueOf(Message.split(" ")[3]),Integer.valueOf(Message.split(" ")[4]),Integer.valueOf(Message.split(" ")[5])));
+					String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
+					BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
+					KokoBot.gc.createRole().setName(Message.split(" ")[1]).setColor(new Color(Integer.valueOf(Message.split(" ")[3]),Integer.valueOf(Message.split(" ")[4]),Integer.valueOf(Message.split(" ")[5]))).complete();
 					KokoBot.roles.add(CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',false)));
-					System.out.println("test");
+					//TODO figure out why the roles file gets cleared every time it uses rcreate
 					bf.append(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',false));
-					
+					bf.close();
 				}       
 				
-				bf.close();
 			}}));
 	}
 	
