@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,18 +23,31 @@ public class RoleManager {
 
 		String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
 		BufferedReader reader = new BufferedReader(new FileReader(path+"src/KokoBot/Roles/Roles.txt"));
-		Object[] Roles = reader.lines().toArray();
-		reader.close();
+		Iterator<String> Roles = reader.lines().iterator();
 		List<CategorisedRole> TextFileRoles = new LinkedList<CategorisedRole>();
-		for(int i = 0;i < Roles.length;i++) {
-			TextFileRoles.add(CategorisedRole.fromString((String) Roles[i]));
+		while(Roles.hasNext()) {
+			String a = Roles.next();
+			TextFileRoles.add(CategorisedRole.fromString(a));
 		}
-		List<CategorisedRole> rolesDuplicate = KokoBot.roles;
+		reader.close();
+		System.out.println(TextFileRoles);
+		List<CategorisedRole> rolesDuplicate = new LinkedList<CategorisedRole>(KokoBot.roles);
+		
 		if(!TextFileRoles.containsAll(KokoBot.roles)) {
 			rolesDuplicate.removeAll(TextFileRoles);
-			BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
+			for(CategorisedRole roletxt: TextFileRoles) {
+				for(CategorisedRole roled: KokoBot.roles) {
+					if(roled.isEqual(roletxt)) {
+						rolesDuplicate.remove(roled);
+					}
+				}
+			}
+			
+			
+			System.out.println(rolesDuplicate);
+			BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt",true));
 			for(int i = 0;i<rolesDuplicate.size();i++) {
-				bf.append(rolesDuplicate.get(i).toString()+(i==rolesDuplicate.size()-1? "" : "\n"));
+				bf.append((i==0? "\n" : "")+rolesDuplicate.get(i).toString()+(i==rolesDuplicate.size()-1? "" : "\n"));
 			}
 			bf.close();
 		}

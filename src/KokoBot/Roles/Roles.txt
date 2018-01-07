@@ -1,3 +1,10 @@
 Test 'KokoBot' false
-Test 'new role' false
+Test 'Admin' false
+Test 'test' false
+Test 'test1' false
+Test 'test2' false
+Test 'test3' false
+Test 'test4' false
+Test 'test5' false
+Test 'test6' false
 Test '@everyone' false

@@ -50,11 +50,11 @@ public class CommandManager {
 					bf.close();
 				} else {
 					String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
-					BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
+					BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt",true));
 					KokoBot.gc.createRole().setName(Message.split(" ")[1]).setColor(new Color(Integer.valueOf(Message.split(" ")[3]),Integer.valueOf(Message.split(" ")[4]),Integer.valueOf(Message.split(" ")[5]))).complete();
 					KokoBot.roles.add(CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',false)));
 					//TODO figure out why the roles file gets cleared every time it uses rcreate
-					bf.append(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',false));
+					bf.append("\n"+Message.split(" ")[2]+" \'"+Message.split(" ")[1]+"\' "+" false");
 					bf.close();
 				}       
 				
