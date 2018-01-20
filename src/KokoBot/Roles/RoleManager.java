@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,9 +16,8 @@ public class RoleManager {
 
 	
 	public static void InitialiseRoles() throws IOException {
-		//TODO Find a way to separate roles
 		for(Role role: KokoBot.guild.getRoles()) {
-			KokoBot.roles.add(new CategorisedRole(RoleCategory.Test,role, false));
+			KokoBot.roles.add(new CategorisedRole("Test",role, false));
 		}
 		
 
@@ -30,27 +30,45 @@ public class RoleManager {
 			TextFileRoles.add(CategorisedRole.fromString(a));
 		}
 		reader.close();
-		System.out.println(TextFileRoles);
-		List<CategorisedRole> rolesDuplicate = new LinkedList<CategorisedRole>(KokoBot.roles);
+		List<CategorisedRole> MissingRolesFromTextFile = new LinkedList<CategorisedRole>(KokoBot.roles);
+		
+		
 		
 		if(!TextFileRoles.containsAll(KokoBot.roles)) {
-			rolesDuplicate.removeAll(TextFileRoles);
+			MissingRolesFromTextFile.removeAll(TextFileRoles);
 			for(CategorisedRole roletxt: TextFileRoles) {
 				for(CategorisedRole roled: KokoBot.roles) {
 					if(roled.isEqual(roletxt)) {
-						rolesDuplicate.remove(roled);
+						MissingRolesFromTextFile.remove(roled);
 					}
 				}
 			}
 			
-			
-			System.out.println(rolesDuplicate);
 			BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt",true));
-			for(int i = 0;i<rolesDuplicate.size();i++) {
-				bf.append((i==0? "\n" : "")+rolesDuplicate.get(i).toString()+(i==rolesDuplicate.size()-1? "" : "\n"));
+			for(int i = 0;i<MissingRolesFromTextFile.size();i++) {
+				bf.append((i==0? "\n" : "")+MissingRolesFromTextFile.get(i).toString()+(i==MissingRolesFromTextFile.size()-1? "" : "\n"));
 			}
 			bf.close();
 		}
+		
+		Comparator<CategorisedRole> comparator = Comparator.comparing(CategorisedRole::getName);
+		
+		BufferedReader reader1 = new BufferedReader(new FileReader(path+"src/KokoBot/Roles/Roles.txt"));
+		Roles = reader1.lines().iterator();
+		TextFileRoles = new LinkedList<CategorisedRole>();
+		while(Roles.hasNext()) {
+			String a = Roles.next();
+			TextFileRoles.add(CategorisedRole.fromString(a));
+		}
+		reader1.close();
+		
+		TextFileRoles.sort(comparator);
+		for(int i = 0;i<KokoBot.roles.size();i++) {
+			if(!KokoBot.roles.get(i).isEqualAssignability(TextFileRoles.get(i)) || !KokoBot.roles.get(i).Category.equals(TextFileRoles.get(i).Category)) {
+				KokoBot.roles.set(i, TextFileRoles.get(i));
+			}
+		}
+		
 		
 		
 	}

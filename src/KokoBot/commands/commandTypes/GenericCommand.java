@@ -3,20 +3,21 @@ package KokoBot.commands.commandTypes;
 import java.io.IOException;
 
 import KokoBot.commands.Command;
-import KokoBot.commands.commandTypes.GenericEventFunctional;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class GenericCommand implements Command{
 
-	String Name;
+	public String Name;
 	GenericEventFunctional Event;
-	public GenericCommand(String Name, GenericEventFunctional Event) {
+	public String desc;
+	public GenericCommand(String Name, GenericEventFunctional Event, String desc) {
 		this.Name = Name;
 		this.Event = Event;
+		this.desc = desc;
 	}
-	
-	
+
+
+
 	@Override
 	public boolean ListenForEvent(String Input) {
 		return Input.startsWith(Name);

@@ -2,24 +2,23 @@ package KokoBot.Roles;
 
 import java.io.Serializable;
 
-import net.dv8tion.jda.core.entities.Role;
-
 import KokoBot.KokoBot;
+import net.dv8tion.jda.core.entities.Role;
 
 public class CategorisedRole implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	RoleCategory Category;
+	public String Category;
 	public Role role;
-	boolean IsSelfAssignable;
-	public CategorisedRole(RoleCategory Category, Role role, boolean IsSelfAssignable) {
+	public boolean IsSelfAssignable;
+	public CategorisedRole(String Category, Role role, boolean IsSelfAssignable) {
 		this.Category = Category;
 		this.role = role;
 		this.IsSelfAssignable = IsSelfAssignable;
 	}
 	
 	public String toString() {
-		return (Category.name() + " \'" + role.getName() + "\' " + Boolean.toString(IsSelfAssignable));
+		return (Category) + " \'" + role.getName() + "\' " + Boolean.toString(IsSelfAssignable);
 	}
 	
 	public static CategorisedRole fromString(String a) {
@@ -27,18 +26,27 @@ public class CategorisedRole implements Serializable{
 		
 		
 		Role foundRole = null;
-		for(CategorisedRole role:KokoBot.roles) {
-			if(role.role.getName().equals(a.split("\'")[1])) {
-				foundRole = role.role;
+		for(Role role:KokoBot.guild.getRoles()) {
+			if(role.getName().equals(a.split("\'")[1])) {
+				foundRole = role;
 			}
 		}
 		
-		return new CategorisedRole(RoleCategory.valueOf(Substrings[0]), foundRole, (Substrings[2].equals("true")));
+		return new CategorisedRole(Substrings[0], foundRole, (Substrings[2].equals("true")));
 	}
 	
 	public boolean isEqual(CategorisedRole cr) {
-		return (cr.role.getName()==role.getName())&&(cr.Category==Category);
+		return (cr.role.getName().equals(role.getName()))&&(cr.Category.equals(Category));
 	}
+	
+	public boolean isEqualAssignability(CategorisedRole cr) {
+		return (cr.IsSelfAssignable == IsSelfAssignable);
+	}
+	
+	public String getName() {
+		return role.getName();
+	}
+
 	
 	
 }
