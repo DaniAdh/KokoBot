@@ -1,1 +1,5 @@
 Test '@everyone' false
+Test 'KokoBot' false
+Test 'Admin' false
+Test 'Role Manager' false
+Test 'test'  false

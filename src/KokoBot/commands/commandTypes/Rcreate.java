@@ -17,7 +17,7 @@ public class Rcreate implements GenericEventFunctional{
 
 		@Override
 		public void onEvent(MessageReceivedEvent event) throws IOException {
-			if(event.getMessage().getContentRaw().split(" ").length<6) {
+			if(event.getMessage().getContentRaw().split(" ").length<4) {
 				event.getChannel().sendMessage("Not enough arguments, type -rhelp rcreate to get syntax").complete();
 				return;
 			}
@@ -52,7 +52,7 @@ public class Rcreate implements GenericEventFunctional{
 			} else {
 				String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
 				BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt",true));
-				KokoBot.gc.createRole().setName(Message.split(" ")[1]).setColor(new Color(Integer.valueOf(Message.split(" ")[3]),Integer.valueOf(Message.split(" ")[4]),Integer.valueOf(Message.split(" ")[5]))).complete();
+				KokoBot.gc.createRole().setName(Message.split(" ")[1]).setColor(new Color(Integer.parseInt(Message.split(" ")[3].substring(1, 7),16))).complete();
 				System.out.println(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',Message.contains("rscreate")));
 				KokoBot.roles.add(CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',Message.contains("rscreate"))));
 				bf.append("\n"+Message.split(" ")[2]+" \'"+Message.split(" ")[1]+"\' "+" false");
