@@ -21,6 +21,8 @@ public class KokoBot extends ListenerAdapter{
 	private static String Token = "";
 	public static JDA jda;
 	public static String Prefix = "-";
+	public static String SelfAssignabilityCharacter = "s";
+	public static String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26)+"src/KokoBot/Roles/Roles.txt";
 	public static Guild guild;
 	public static GuildController gc;
 	
@@ -36,8 +38,8 @@ public class KokoBot extends ListenerAdapter{
 		CommandManager.InitializeCommands();
 		
 		//Creates Guild instance (Used to make roles on server)
-		guild = jda.getGuildById("398952343435083778");
-		gc = new GuildController(guild);
+		//guild = jda.getGuildById("398952343435083778");
+		//gc = new GuildController(guild);
 		
 		//Writes missing roles to text file and reads from it to get categories and self-assignability
 		RoleManager.InitialiseRoles();

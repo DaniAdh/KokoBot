@@ -6,9 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import KokoBot.KokoBot;
+import KokoBot.Utilities;
 import KokoBot.Roles.CategorisedRole;
-import KokoBot.Roles.RoleManager;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Rcreate implements GenericEventFunctional{
@@ -18,46 +17,44 @@ public class Rcreate implements GenericEventFunctional{
 		@Override
 		public void onEvent(MessageReceivedEvent event) throws IOException {
 			if(event.getMessage().getContentRaw().split(" ").length<4) {
-				event.getChannel().sendMessage("Not enough arguments, type -rhelp rcreate to get syntax").complete();
+				Utilities.sendMessage(event, "Not enough arguments, type -help rcreate to get syntax");
 				return;
 			}
 			
-			if(!event.getAuthor().isBot() && !KokoBot.guild.getMembersWithRoles(KokoBot.guild.getRolesByName("Role Manager", true).get(0)).contains(KokoBot.guild.getMember(event.getAuthor()))) {
-				event.getChannel().sendMessage(new MessageBuilder().append("You do not have the \"Role Manager\" role!").build()).complete();
+			if(!event.getAuthor().isBot() && !KokoBot.guild.getMembersWithRoles(KokoBot.guild.getRolesByName("Role Manager", true).get(0)).contains(Utilities.getMember(event))) {
+				Utilities.sendMessage(event, ("You do not have the \"Role Manager\" role!"));
 				return;
-				}
-			String Message = event.getMessage().getContentDisplay();
-			boolean Exists = false;
-			CategorisedRole ExistingRole = null;
+			}
+
+			String name = Utilities.messageSplit(event, " ", 1);
+			String category = Utilities.messageSplit(event, " ", 2);
+			Color color = new Color(Integer.parseInt(Utilities.messageSplit(event, " ", 2).substring(1, 7),16));
 			
-			for(CategorisedRole role:KokoBot.roles) {
-				if(role.role.getName().equals(Message.split(" ")[1])) {
-					Exists = true;
-					ExistingRole = role;
-					break;
-				}
-			}   
+			CategorisedRole ExistingRole = Utilities.findRoleWithName(KokoBot.roles, name);
+			boolean selfassignable = Utilities.messageSplit(event, " ", 0).contains(KokoBot.SelfAssignabilityCharacter);
 			
 			
+			CategorisedRole Role = CategorisedRole.fromString(String.format("%s %s %s", category,'\''+name+'\'',selfassignable));
 			
-			if(Exists) {
-				String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
-				BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt"));
-				KokoBot.roles.set(KokoBot.roles.indexOf(ExistingRole), CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',(Message.contains("rscreate")))));
+			//If the role exists
+			
+			if(ExistingRole!=null) {
+				BufferedWriter bf = new BufferedWriter(new FileWriter(KokoBot.path, false));
+				KokoBot.roles.set(KokoBot.roles.indexOf(ExistingRole), Role);
 				for(int i = 0;i<KokoBot.roles.size();i++) {
 					bf.write(KokoBot.roles.get(i).toString()+(i==KokoBot.roles.size()-1 ? "" : '\n'));
 				}
 				bf.close();
-				event.getChannel().sendMessage("Role " + Message.split(" ")[1] + " for Category " + Message.split(" ")[2] + " had been modified").complete();
+				
+				Utilities.sendMessage(event, "Role " + name + " for Category " + category + " had been modified");
 			} else {
-				String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26);
-				BufferedWriter bf = new BufferedWriter(new FileWriter(path+"src/KokoBot/Roles/Roles.txt",true));
-				KokoBot.gc.createRole().setName(Message.split(" ")[1]).setColor(new Color(Integer.parseInt(Message.split(" ")[3].substring(1, 7),16))).complete();
-				System.out.println(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',Message.contains("rscreate")));
-				KokoBot.roles.add(CategorisedRole.fromString(String.format("%s %s %s", Message.split(" ")[2],'\''+Message.split(" ")[1]+'\'',Message.contains("rscreate"))));
-				bf.append("\n"+Message.split(" ")[2]+" \'"+Message.split(" ")[1]+"\' "+" false");
+				BufferedWriter bf = new BufferedWriter(new FileWriter(KokoBot.path,true));
+				KokoBot.gc.createRole().setName(name).setColor(color).complete();
+				KokoBot.roles.add(Role);
+				bf.append("\n"+category+" \'"+name+"\' "+" false");
 				bf.close();
-				event.getChannel().sendMessage("Role " + Message.split(" ")[1] + " for Category " + Message.split(" ")[2] + " had been created").complete();
+				
+				Utilities.sendMessage(event, "Role " + name + " for Category " + category + " had been created");
 			}       
 			
 			
