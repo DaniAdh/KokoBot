@@ -18,7 +18,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.GuildController;
 
 public class KokoBot extends ListenerAdapter{	
-	private static String Token = "";
+	private static String Token = "Mzk4OTQxNzUwMjMzOTIzNTg0.DTKGmw.3Rpmwb5CleechxS2dV3CSstChws";
 	public static JDA jda;
 	public static String Prefix = "-";
 	public static String SelfAssignabilityCharacter = "s";
@@ -38,8 +38,8 @@ public class KokoBot extends ListenerAdapter{
 		CommandManager.InitializeCommands();
 		
 		//Creates Guild instance (Used to make roles on server)
-		//guild = jda.getGuildById("398952343435083778");
-		//gc = new GuildController(guild);
+		guild = jda.getGuildById("398952343435083778");
+		gc = new GuildController(guild);
 		
 		//Writes missing roles to text file and reads from it to get categories and self-assignability
 		RoleManager.InitialiseRoles();
@@ -48,7 +48,6 @@ public class KokoBot extends ListenerAdapter{
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event){
 		if(event.getAuthor().isBot() || !event.getChannel().getName().equals("bot")) {return;}
-		System.out.println(event.getGuild().getId());
 		try {
 			CommandManager.TestForCommands(event);
 		} catch (IOException e) {

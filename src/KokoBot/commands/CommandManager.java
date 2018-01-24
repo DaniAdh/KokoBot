@@ -7,12 +7,12 @@ import java.util.List;
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.commands.commandTypes.GenericCommand;
-import KokoBot.commands.commandTypes.Radd;
-import KokoBot.commands.commandTypes.Rcategories;
-import KokoBot.commands.commandTypes.Rcommands;
-import KokoBot.commands.commandTypes.Rcreate;
-import KokoBot.commands.commandTypes.Rdesc;
-import KokoBot.commands.commandTypes.Rpurge;
+import KokoBot.commands.commandTypes.roleCommands.Radd;
+import KokoBot.commands.commandTypes.roleCommands.Rcategories;
+import KokoBot.commands.commandTypes.roleCommands.Rcommands;
+import KokoBot.commands.commandTypes.roleCommands.Rcreate;
+import KokoBot.commands.commandTypes.roleCommands.Rdesc;
+import KokoBot.commands.commandTypes.roleCommands.Rpurge;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class CommandManager {
@@ -24,9 +24,9 @@ public class CommandManager {
 	public static void InitializeCommands() {
 		Commands.add(new GenericCommand("Mention", (event) -> Utilities.sendMessage(event, Utilities.getMember(event).getAsMention()),"Replies with \"Pong\""));
 		Commands.add(new GenericCommand("Ping", (event) -> Utilities.sendMessage(event, "Pong"),"Replies with \"Pong\""));
-		Commands.add(new GenericCommand("rcreate", new Rcreate(),"Syntax: -rcreate <Name> <Category> #<Hex value for color>, creates a non-self-assignable role with a name, category and color"));
-		Commands.add(new GenericCommand("rscreate", new Rcreate(),"Syntax: -rscreate <Name> <Category> #<Hex value for color>, creates a self-assignable role with a name, category and color"));
-		Commands.add(new GenericCommand("radd", new Radd(), "Syntax: -radd <Name>, creates a self-assignable role with a name, category and color"));
+		Commands.add(new GenericCommand("rcreate", new Rcreate(),"Syntax: -rcreate <Name> <Category> #<Hex value for color>* \"description\"*, creates a non-self-assignable role with these attributes. * means optional"));
+		Commands.add(new GenericCommand("rscreate", new Rcreate(),"Syntax: -rscreate <Name> <Category> #<Hex value for color>* \"description\"*, creates a self-assignable role with these attributes. * means optional \n NOTE: If the role already exists, these commands change its attributes, but due to how discord manages roles, colors of roles can only be changed manually"));
+		Commands.add(new GenericCommand("radd", new Radd(), "Syntax: -radd <Name>, adds the role <Name> to the user"));
 		Commands.add(new GenericCommand("rcategories", new Rcategories(), "Replies with a list of categories on this server"));
 		Commands.add(new GenericCommand("rinfo", new Rcommands(), "Syntax: -rinfo <Category>, Sends the user a PM with a list of non-self-assignable roles with category <Category> on this server"));
 		Commands.add(new GenericCommand("rsinfo", new Rcommands(), "Syntax: -rsinfo <Category>, Sends the user a PM with a list of self-assignable roles with category <Category> on this server"));
@@ -50,11 +50,11 @@ public class CommandManager {
 	}
 	
 	
-
 	
 	
 	
 	
 	
-
+	
+	
 }

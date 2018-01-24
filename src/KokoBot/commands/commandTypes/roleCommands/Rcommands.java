@@ -1,4 +1,4 @@
-package KokoBot.commands.commandTypes;
+package KokoBot.commands.commandTypes.roleCommands;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Roles.CategorisedRole;
+import KokoBot.commands.commandTypes.GenericEventFunctional;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Rcommands implements GenericEventFunctional {

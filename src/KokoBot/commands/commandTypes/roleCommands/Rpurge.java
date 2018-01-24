@@ -1,4 +1,4 @@
-package KokoBot.commands.commandTypes;
+package KokoBot.commands.commandTypes.roleCommands;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -8,6 +8,7 @@ import java.util.List;
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Roles.RoleManager;
+import KokoBot.commands.commandTypes.GenericEventFunctional;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

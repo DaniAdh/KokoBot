@@ -21,8 +21,8 @@ public class CategorisedRole{
 		return Category + " \'" + role.getName() + "\' " + Boolean.toString(IsSelfAssignable) + " \"" + Description + "\"";
 	}
 	
+	//Category 'Name' isselfassignable "description"
 	public static CategorisedRole fromString(String a) {
-		String[] Substrings = a.split(" "); 
 		
 		Role foundRole = null;
 		for(Role role:KokoBot.guild.getRoles()) {
@@ -31,7 +31,7 @@ public class CategorisedRole{
 			}
 		}
 		
-		return new CategorisedRole(Substrings[0], foundRole, Substrings[2].equals("true"), Substrings[3].replaceAll("\"", ""));
+		return new CategorisedRole(a.split(" ")[0], foundRole, a.indexOf("true")!=-1 && (a.split("\'")[1].indexOf("true")+a.indexOf("\'"))!=a.indexOf("true"), a.substring(a.indexOf("\"")+1, a.replaceFirst("\"", "").indexOf("\"")+1));
 	}
 	
 	public boolean isEqual(CategorisedRole cr) {

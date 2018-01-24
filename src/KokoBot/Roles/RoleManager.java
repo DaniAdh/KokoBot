@@ -27,7 +27,7 @@ public class RoleManager {
 		
 		while(Roles.hasNext()) {
 			String a = Roles.next();
-			TextFileRoles.add(CategorisedRole.fromString(a.split("\"")[0]));
+			TextFileRoles.add(CategorisedRole.fromString(a));
 		}
 		
 		reader.close();
