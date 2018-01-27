@@ -20,6 +20,7 @@ public class ErinfoForewards implements EmoteEventFunctional{
 		Message message = event.getChannel().getMessageById(event.getMessageId()).complete();
 		message.editMessage("");
 		//TODO
+		
 		/*
 		String Category = Utilities.SplitMessageAndGetIndex(event, " ", 1);
 		
