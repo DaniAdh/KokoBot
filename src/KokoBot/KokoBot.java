@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.auth.login.LoginException;
 
+import KokoBot.Calendar.Event;
 import KokoBot.Roles.CategorisedRole;
 import KokoBot.Roles.RoleManager;
 import KokoBot.commands.CommandManager;
@@ -13,20 +14,22 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.GuildController;
 
 public class KokoBot extends ListenerAdapter{	
-	private static String Token = "";
+	private static String Token = "Mzk4OTQxNzUwMjMzOTIzNTg0.DTKGmw.3Rpmwb5CleechxS2dV3CSstChws";
 	public static JDA jda;
 	public static String Prefix = "-";
 	public static String SelfAssignabilityCharacter = "s";
-	public static String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26)+"src/KokoBot/Roles/Roles.txt";
+	public static String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26)+"src/KokoBot/";
 	public static Guild guild;
 	public static GuildController gc;
 	
 	public static List<CategorisedRole> roles = new LinkedList<CategorisedRole>();
+	public static List<Event> events = new LinkedList<Event>();
 	
 	//TODO override roles when making one with the same name
 	public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, RateLimitedException, IOException {
@@ -57,6 +60,15 @@ public class KokoBot extends ListenerAdapter{
 		
 	}
 	
+	@Override
+	public void onMessageReactionAdd(MessageReactionAddEvent event) {
+		if(event.getMember().getUser().isBot() || !event.getChannel().getName().equals("bot")) {return;}
+		try {
+			CommandManager.TestForEmotes(event);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 
 }

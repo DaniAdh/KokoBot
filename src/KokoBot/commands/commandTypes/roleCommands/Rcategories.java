@@ -8,12 +8,13 @@ import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Roles.CategorisedRole;
 import KokoBot.commands.commandTypes.GenericEventFunctional;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Rcategories implements GenericEventFunctional{
 
 	@Override
-	public void onEvent(MessageReceivedEvent event) throws IOException {
+	public Message onEvent(MessageReceivedEvent event) throws IOException {
 		List<String> categories = new ArrayList<String>();
 		
 		for(CategorisedRole role: KokoBot.roles) {
@@ -22,7 +23,7 @@ public class Rcategories implements GenericEventFunctional{
 			}
 		}
 		
-		Utilities.sendMessage(event, "List of Categories: " + categories.toString().replace("[", "").replace("]", ""));
+		return Utilities.sendMessage(event, "List of Categories: " + categories.toString().replace("[", "").replace("]", ""));
 		
 	}
 

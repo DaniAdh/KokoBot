@@ -7,20 +7,20 @@ import java.util.List;
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Roles.CategorisedRole;
-import KokoBot.commands.commandTypes.GenericEventFunctional;
+import KokoBot.commands.commandTypes.EmoteEventFunctional;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
-public class Rcommands implements GenericEventFunctional {
+public class ErinfoForewards implements EmoteEventFunctional{
 
+	
+	
 	@Override
-	public Message onEvent(MessageReceivedEvent event) throws IOException {
-		System.out.println("Test");
-		if(event.getMessage().getContentRaw().split(" ").length==1) {
-			Utilities.sendMessage(event, "Specify a Category, to see categories type -rcategories");
-			return null;
-		}
-		
+	public void onEvent(MessageReactionAddEvent event) throws IOException {
+		Message message = event.getChannel().getMessageById(event.getMessageId()).complete();
+		message.editMessage("");
+		//TODO
+		/*
 		String Category = Utilities.SplitMessageAndGetIndex(event, " ", 1);
 		
 		List<String> roles = new ArrayList<String>();
@@ -31,8 +31,10 @@ public class Rcommands implements GenericEventFunctional {
 			}
 		}
 
-		return Utilities.sendMessage(event, "List of roles under the category " + Category + ": " + roles.toString().replace("[", "").replace("]", ""));
-
+		return Utilities.sendMessage(event, "List of roles under the category " + Category + ": " + roles.toString().replace("[", "").replace("]", ""));*/
+		
 	}
+
+
 
 }

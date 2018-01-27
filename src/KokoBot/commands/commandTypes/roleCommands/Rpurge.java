@@ -9,16 +9,17 @@ import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Roles.RoleManager;
 import KokoBot.commands.commandTypes.GenericEventFunctional;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Rpurge implements GenericEventFunctional {
 
 	@Override
-	public void onEvent(MessageReceivedEvent event) throws IOException {
+	public Message onEvent(MessageReceivedEvent event) throws IOException {
 		if(!event.getAuthor().getId().equals("279013703020576784")) {
 			Utilities.sendMessage(event, "Permission Denied");
-			return;
+			return null;
 		}
 		
 		List<Role> roles = KokoBot.guild.getRoles();
@@ -33,6 +34,7 @@ public class Rpurge implements GenericEventFunctional {
 		bf.write("Test '@everyone' false");
 		bf.close();
 		RoleManager.InitialiseRoles();
+		return Utilities.sendMessage(event, "Purged!");
 		
 	}
 

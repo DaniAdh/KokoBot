@@ -2,8 +2,9 @@
 
 import java.io.IOException;
 
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public interface GenericEventFunctional {
-	void onEvent(MessageReceivedEvent event) throws IOException;
+	Message onEvent(MessageReceivedEvent event) throws IOException;
 }

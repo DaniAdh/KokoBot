@@ -1,14 +1,13 @@
 package KokoBot.Roles;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import KokoBot.FileUtilities;
 import KokoBot.KokoBot;
 import net.dv8tion.jda.core.entities.Role;
 
@@ -21,12 +20,13 @@ public class RoleManager {
 			KokoBot.roles.add(new CategorisedRole("Test", role, false, ""));
 		}
 		
-		BufferedReader reader = new BufferedReader(new FileReader(KokoBot.path));
+		BufferedReader reader = new BufferedReader(new FileReader(KokoBot.path+"Roles/Roles.txt"));
 		Iterator<String> Roles = reader.lines().iterator();
 		List<CategorisedRole> TextFileRoles = new LinkedList<CategorisedRole>();
 		
 		while(Roles.hasNext()) {
 			String a = Roles.next();
+			System.out.println(a);
 			TextFileRoles.add(CategorisedRole.fromString(a));
 		}
 		
@@ -45,16 +45,18 @@ public class RoleManager {
 				}
 			}
 			
-			BufferedWriter bf = new BufferedWriter(new FileWriter(KokoBot.path,true));
+			//BufferedWriter bf = new BufferedWriter(new FileWriter(KokoBot.path+"Roles/Roles.txt",true));
 			for(int i = 0;i<MissingRolesFromTextFile.size();i++) {
-				bf.append((i==0? "\n" : "")+MissingRolesFromTextFile.get(i).toString()+(i==MissingRolesFromTextFile.size()-1? "" : "\n"));
+				//bf.append((i==0? "\n" : "")+MissingRolesFromTextFile.get(i).toString()+(i==MissingRolesFromTextFile.size()-1? "" : "\n"));
+				FileUtilities.addToFile(KokoBot.path+"Roles/Roles.txt", MissingRolesFromTextFile.get(i).toString());
 			}
-			bf.close();
+			//bf.close();
+			
 		}
 		
 		Comparator<CategorisedRole> comparator = Comparator.comparing(CategorisedRole::getName);
 		
-		BufferedReader reader1 = new BufferedReader(new FileReader(KokoBot.path));
+		BufferedReader reader1 = new BufferedReader(new FileReader(KokoBot.path+"Roles/Roles.txt"));
 		Roles = reader1.lines().iterator();
 		TextFileRoles = new LinkedList<CategorisedRole>();
 		while(Roles.hasNext()) {

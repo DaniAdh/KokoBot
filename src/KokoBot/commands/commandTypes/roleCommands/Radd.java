@@ -6,27 +6,28 @@ import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Roles.CategorisedRole;
 import KokoBot.commands.commandTypes.GenericEventFunctional;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class Radd implements GenericEventFunctional{
 
 	@Override
-	public void onEvent(MessageReceivedEvent event) throws IOException {
-		CategorisedRole role = Utilities.findRoleWithName(KokoBot.roles, Utilities.messageSplit(event, " ", 1));
+	public Message onEvent(MessageReceivedEvent event) throws IOException {
+		CategorisedRole role = Utilities.findRoleWithName(KokoBot.roles, Utilities.SplitMessageAndGetIndex(event, " ", 1));
 		
 		if(role==null) {
-			Utilities.sendMessage(event, "Role " + Utilities.messageSplit(event, " ", 1) + " does not exist!");
-			return;
+			Utilities.sendMessage(event, "Role " + Utilities.SplitMessageAndGetIndex(event, " ", 1) + " does not exist!");
+			return null;
 		}
 		
 		if(!role.IsSelfAssignable) {
 			event.getChannel().sendMessage("Role " + role.getName() + " is not self-assignable!").complete();
-			return;
+			return null;
 		}
 			
 		
 		KokoBot.gc.addSingleRoleToMember(Utilities.getMember(event), role.role).complete();
-		Utilities.sendMessage(event, "Added Role " + role.getName() + " to " + event.getAuthor().getName());
+		return Utilities.sendMessage(event, "Added Role " + role.getName() + " to " + event.getAuthor().getName());
 	}
 
 }
