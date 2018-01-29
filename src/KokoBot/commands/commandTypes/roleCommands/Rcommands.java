@@ -15,23 +15,37 @@ public class Rcommands implements GenericEventFunctional {
 
 	@Override
 	public Message onEvent(MessageReceivedEvent event) throws IOException {
-		System.out.println("Test");
-		if(event.getMessage().getContentRaw().split(" ").length==1) {
-			Utilities.sendMessage(event, "Specify a Category, to see categories type -rcategories");
-			return null;
-		}
 		
-		String Category = Utilities.SplitMessageAndGetIndex(event, " ", 1);
 		
-		List<String> roles = new ArrayList<String>();
+		String Category;
+		
+		List<String> categories = new ArrayList<String>();
 		
 		for(CategorisedRole role: KokoBot.roles) {
-			if(role.Category.equals(Category) && (!Utilities.SplitMessageAndGetIndex(event, " ", 0).contains(KokoBot.SelfAssignabilityCharacter) || role.IsSelfAssignable)) {
-				roles.add(role.getName());
+			if(!categories.contains(role.Category)) {
+				categories.add(role.Category);
 			}
 		}
-
-		return Utilities.sendMessage(event, "List of roles under the category " + Category + ": " + roles.toString().replace("[", "").replace("]", ""));
+		
+		try {
+			Category = Utilities.SplitMessageAndGetIndex(event, " ", 1);
+		}catch(Exception e) {
+			Category = categories.get(0);
+		}
+		
+		boolean selfassignable = Utilities.SplitMessageAndGetIndex(event, " ", 0).contains(KokoBot.SelfAssignabilityCharacter);
+		
+		String roles = "";
+		
+		for(CategorisedRole role: KokoBot.roles) {
+			if(role.Category.equals(Category) && (!selfassignable || role.IsSelfAssignable)) {
+				roles += role.getName() + ", " + role.Description + "\n";
+			}
+		}
+		
+		Message msg = Utilities.sendMessage(event, (selfassignable? "Self-Assignable" : "") + " Roles under " + Category + "\n```" + roles.toString().replace("[", "").replace("]", "") + "\n```");
+		msg.addReaction("▶").complete();
+		return msg;
 
 	}
 

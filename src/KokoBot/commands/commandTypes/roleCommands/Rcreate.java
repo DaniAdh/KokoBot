@@ -2,6 +2,7 @@ package KokoBot.commands.commandTypes.roleCommands;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Arrays;
 
 import KokoBot.FileUtilities;
 import KokoBot.KokoBot;
@@ -47,8 +48,7 @@ public class Rcreate implements GenericEventFunctional{
 				
 				KokoBot.roles.set(KokoBot.roles.indexOf(ExistingRole), Role);
 				
-				System.out.println(KokoBot.roles.toString().replace("[", "").replace("]", "").split(","));
-				FileUtilities.overrideFile(KokoBot.path+"Roles/Roles.txt", KokoBot.roles.toString().replace("[", "").replace("]", "").split(","));
+				FileUtilities.overrideFile(KokoBot.path+"Roles/Roles.txt", Arrays.asList(KokoBot.roles.toString().replace("[", "").replace("]", "").split(",")));
 				 
 				return Utilities.sendMessage(event, "Role " + name + " for Category " + category + " had been modified");
 			} else {

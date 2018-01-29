@@ -3,6 +3,8 @@ package KokoBot;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 public class FileUtilities {
 	
@@ -25,10 +27,11 @@ public class FileUtilities {
 	
 	
 	
-	public static void overrideFile(String path, String[] Lines) throws IOException {
+	public static void overrideFile(String path, List<String> activeEvents) throws IOException {
 		BufferedWriter bf = new BufferedWriter(new FileWriter(path, false));
-		for(int i = 0;i<Lines.length;i++) {
-		 	bf.write(Lines[i]+(i==Lines.length-1 ? "" : '\n'));
+		Iterator<String> iter = activeEvents.iterator();
+		while(iter.hasNext()) {
+		 	bf.write(iter.next()+(!iter.hasNext() ? "" : '\n'));
 		}
 		bf.close();
 	}

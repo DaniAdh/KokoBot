@@ -1,10 +1,13 @@
 package KokoBot;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.security.auth.login.LoginException;
 
+import KokoBot.Calendar.CalendarManager;
 import KokoBot.Calendar.Event;
 import KokoBot.Roles.CategorisedRole;
 import KokoBot.Roles.RoleManager;
@@ -37,8 +40,18 @@ public class KokoBot extends ListenerAdapter{
 		//Creates an instance of JDA, links with the bot through Token, attaches this class as an event listener
 		jda = new JDABuilder(AccountType.BOT).setToken(Token).addEventListener(new KokoBot()).buildBlocking();
 		
+		TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+		
 		//Adds commands (Go to class for more detail)
 		CommandManager.InitializeCommands();
+		
+
+		
+		try {
+			CalendarManager.InitialiseEvents();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		//Creates Guild instance (Used to make roles on server)
 		guild = jda.getGuildById("398952343435083778");

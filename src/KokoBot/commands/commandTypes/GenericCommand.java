@@ -3,6 +3,8 @@ package KokoBot.commands.commandTypes;
 import java.io.IOException;
 
 import KokoBot.commands.Command;
+import KokoBot.commands.CommandManager;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class GenericCommand implements Command{
@@ -33,8 +35,10 @@ public class GenericCommand implements Command{
 
 	@Override
 	public void onEvent(MessageReceivedEvent Message) throws IOException {
-		Event.onEvent(Message);
-		 
+		Message msg = Event.onEvent(Message);
+		for(GenericEmoteShellEvent shell:emotelisteners) {
+			CommandManager.emoteevents.add(new GenericEmoteEvent(shell.emote, shell.Event,msg.getId(), shell.collectiveID));
+		}
 	}
 
 

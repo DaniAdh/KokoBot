@@ -35,7 +35,7 @@ public class GenericCommandWithUnicodeEmote implements Command{
 	public void onEvent(MessageReceivedEvent Message) throws IOException {
 		Message msg = Event.onEvent(Message);
 		for(GenericUnicodeEmoteShellEvent shell:emotelisteners) {
-			CommandManager.unicodeemoteevents.add(new GenericUnicodeEmoteEvent(shell.emote, shell.Event, msg.getId()));
+			CommandManager.unicodeemoteevents.add(new GenericUnicodeEmoteEvent(shell.emote, shell.Event,msg.getId(), shell.collectiveID));
 		}
 		 
 	}

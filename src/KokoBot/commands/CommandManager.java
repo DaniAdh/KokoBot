@@ -11,6 +11,14 @@ import KokoBot.commands.commandTypes.GenericCommandWithUnicodeEmote;
 import KokoBot.commands.commandTypes.GenericEmoteEvent;
 import KokoBot.commands.commandTypes.GenericUnicodeEmoteEvent;
 import KokoBot.commands.commandTypes.GenericUnicodeEmoteShellEvent;
+import KokoBot.commands.commandTypes.calendarCommands.AddEvent;
+import KokoBot.commands.commandTypes.calendarCommands.ECalendarBackwards;
+import KokoBot.commands.commandTypes.calendarCommands.ECalendarFastForewards;
+import KokoBot.commands.commandTypes.calendarCommands.ECalendarForewards;
+import KokoBot.commands.commandTypes.calendarCommands.ECalendarRewind;
+import KokoBot.commands.commandTypes.calendarCommands.EShowevents;
+import KokoBot.commands.commandTypes.calendarCommands.ShowCalendar;
+import KokoBot.commands.commandTypes.calendarCommands.ShowEvents;
 import KokoBot.commands.commandTypes.roleCommands.ErinfoForewards;
 import KokoBot.commands.commandTypes.roleCommands.Radd;
 import KokoBot.commands.commandTypes.roleCommands.Rcategories;
@@ -32,7 +40,6 @@ public class CommandManager {
 	public static String Help = "";
 	
 	public static void InitializeCommands() {
-		Commands.add(new GenericCommand("Mention", (event) -> Utilities.sendMessage(event, Utilities.getMember(event).getAsMention()),"Replies with \"Pong\""));
 		Commands.add(new GenericCommand("Ping", (event) -> Utilities.sendMessage(event, "Pong"),"Replies with \"Pong\""));
 		Commands.add(new GenericCommand("rcreate", new Rcreate(),
 				"Syntax: -rcreate <Name> <Category> #<Hex value for color>* \"description\"*, creates a non-self-assignable role with these attributes. * means optional"));
@@ -45,19 +52,36 @@ public class CommandManager {
 		Commands.add(new GenericCommand("rcategories", new Rcategories(),
 				"Replies with a list of categories on this server"));
 		CommandsWithUnicode.add(new GenericCommandWithUnicodeEmote("rinfo", new Rcommands(), 
-				"Syntax: -rinfo <Category>, Sends the user a PM with a list of non-self-assignable roles with category <Category> on this server", 
-				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("👌", new ErinfoForewards())}));
-		Commands.add(new GenericCommand("rsinfo", new Rcommands(),
-				"Syntax: -rsinfo <Category>, Sends the user a PM with a list of self-assignable roles with category <Category> on this server"));
+				"Syntax: -rinfo, Shows the user a list of roles by category", 
+				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("▶", new ErinfoForewards(), n->"")}));
+		CommandsWithUnicode.add(new GenericCommandWithUnicodeEmote("rsinfo", new Rcommands(),
+				"Syntax: -rsinfo, Shows the user a list of self-assignable roles by category",
+				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("▶", new ErinfoForewards(), n->"")}));
 		Commands.add(new GenericCommand("rpurge", new Rpurge(), 
 				"Removes all roles with standard privilages from the server"));
 		Commands.add(new GenericCommand("rdesc", new Rdesc(),
 				"Syntax: -rdesc <Name> Return the description of a particular role"));
+		
+		Commands.add(new GenericCommand("addEvent", 
+				new AddEvent(), "Syntax: addEvent \"Message\" 'Role:ROLENAME'/me/everybody time_indicator\n"
+						+ "Where time_indicator is one of the following: X hours, X minutes, XX:XX later, dd/MM XX:XX, XX:XX or dd/MM \\nWhere dd is the day and MM is the month"));
+		
+		Commands.add(new GenericCommand("Events", 
+				new ShowEvents(), "Shows Events"));
+		CommandsWithUnicode.add(new GenericCommandWithUnicodeEmote("Calendar", 
+				new ShowCalendar(), "Shows Calendar",
+				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("▶", new ECalendarForewards(), n->ECalendarForewards.calendarMessageId), 
+						new GenericUnicodeEmoteShellEvent("⏩", new ECalendarFastForewards(), n->ECalendarForewards.calendarMessageId),
+						new GenericUnicodeEmoteShellEvent("◀", new ECalendarBackwards(), n->ECalendarForewards.calendarMessageId),
+						new GenericUnicodeEmoteShellEvent("⏪", new ECalendarRewind(), n->ECalendarForewards.calendarMessageId),
+						new GenericUnicodeEmoteShellEvent("❗", new EShowevents(), n->ECalendarForewards.calendarMessageId)}));
+		
 		Commands.add(new GenericCommand("help", 
 				new help(), "Sends the user a PM containing this message"));
 		for(GenericCommand command: Commands) {
 			Help = Help + "-" + command.Name + ", " + command.desc + "\n";
 		}
+		Help = "```"+Help+"```";
 	}
 	
 	public static void TestForCommands(MessageReceivedEvent MessageEvent) throws IOException {

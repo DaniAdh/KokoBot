@@ -17,7 +17,7 @@ public class RoleManager {
 	public static void InitialiseRoles() throws IOException {
 		
 		for(Role role: KokoBot.guild.getRoles()) {
-			KokoBot.roles.add(new CategorisedRole("Test", role, false, ""));
+			KokoBot.roles.add(new CategorisedRole("Default", role, false, ""));
 		}
 		
 		BufferedReader reader = new BufferedReader(new FileReader(KokoBot.path+"Roles/Roles.txt"));
@@ -26,7 +26,6 @@ public class RoleManager {
 		
 		while(Roles.hasNext()) {
 			String a = Roles.next();
-			System.out.println(a);
 			TextFileRoles.add(CategorisedRole.fromString(a));
 		}
 		
