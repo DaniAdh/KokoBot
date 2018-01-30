@@ -9,6 +9,8 @@ import javax.security.auth.login.LoginException;
 
 import KokoBot.Calendar.CalendarManager;
 import KokoBot.Calendar.Event;
+import KokoBot.Processes.BackgroundProcess;
+import KokoBot.Processes.ProcessManager;
 import KokoBot.Roles.CategorisedRole;
 import KokoBot.Roles.RoleManager;
 import KokoBot.commands.CommandManager;
@@ -33,6 +35,7 @@ public class KokoBot extends ListenerAdapter{
 	
 	public static List<CategorisedRole> roles = new LinkedList<CategorisedRole>();
 	public static List<Event> events = new LinkedList<Event>();
+	public static List<BackgroundProcess> backgroundProcesses = new LinkedList<BackgroundProcess>();
 	
 	//TODO override roles when making one with the same name
 	public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, RateLimitedException, IOException {
@@ -45,6 +48,7 @@ public class KokoBot extends ListenerAdapter{
 		//Adds commands (Go to class for more detail)
 		CommandManager.InitializeCommands();
 		
+		ProcessManager.InitialiseProcesses();
 
 		
 		try {

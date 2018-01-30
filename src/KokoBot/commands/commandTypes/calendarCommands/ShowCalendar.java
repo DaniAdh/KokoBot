@@ -55,9 +55,13 @@ public class ShowCalendar implements GenericEventFunctional{
 	    for(Event Event: CalendarManager.Events) {
 	    	Calendar calendar = Calendar.getInstance();
 	    	calendar.setTime(Event.date);
+	    	boolean cont = false;
 	    	for(Member member: KokoBot.guild.getMembers()) {
-				if(Event.message.contains(member.getAsMention())) {continue;}
+				if(Event.message.contains(member.getAsMention())) {cont=true;break;}
 			}
+	    	if(cont) {
+	    		continue;
+	    	}
 	    	if(calendar.get(Calendar.MONTH)==month) {
 	    		int day = calendar.get(Calendar.DAY_OF_MONTH)-1;
 	    		g.drawImage(small, 10+50*(day%7), (int) (20+50*(Math.floor(day/7))), null);

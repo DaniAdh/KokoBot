@@ -39,6 +39,16 @@ public class GenericCommandWithUnicodeEmote implements Command{
 		}
 		 
 	}
+	
+	@Override
+	public String getName() {
+		return Name;
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
+	}
 
 
 }

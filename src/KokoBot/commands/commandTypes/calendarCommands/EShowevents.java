@@ -19,6 +19,7 @@ public class EShowevents implements EmoteEventFunctional {
 		Message msg = event.getChannel().getMessageById(event.getMessageId()).complete();
 		
 		int month = (int)CalendarManager.stringmonthtoint.get(msg.getContentRaw().replace(":", ""));
+		int i = 0;
 		for(Event Event: CalendarManager.Events) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(Event.date);
@@ -31,6 +32,10 @@ public class EShowevents implements EmoteEventFunctional {
 				continue;
 			}
 			Utilities.sendMessage(event.getChannel(), new SimpleDateFormat("dd/MM/yyyy kk:mm").format(Event.date) + " \"" + Event.message.split("§")[1] + "\" to " + to);
+			i++;
+		}
+		if(i==0) {
+			Utilities.sendMessage(event.getChannel(), "No Event Found");
 		}
 		return null;
 	}

@@ -27,6 +27,7 @@ import KokoBot.commands.commandTypes.roleCommands.Rcreate;
 import KokoBot.commands.commandTypes.roleCommands.Rdesc;
 import KokoBot.commands.commandTypes.roleCommands.Rpurge;
 import KokoBot.commands.commandTypes.roleCommands.help;
+import KokoBot.commands.processCommands.Subscribe;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
@@ -75,11 +76,16 @@ public class CommandManager {
 						new GenericUnicodeEmoteShellEvent("◀", new ECalendarBackwards(), n->ECalendarForewards.calendarMessageId),
 						new GenericUnicodeEmoteShellEvent("⏪", new ECalendarRewind(), n->ECalendarForewards.calendarMessageId),
 						new GenericUnicodeEmoteShellEvent("❗", new EShowevents(), n->ECalendarForewards.calendarMessageId)}));
+		Commands.add(new GenericCommand("Subscribe", 
+				new Subscribe(), "Syntax: Subscribe URL \n Where URL is the URL to the videos page of the channel"));
 		
 		Commands.add(new GenericCommand("help", 
 				new help(), "Sends the user a PM containing this message"));
 		for(GenericCommand command: Commands) {
-			Help = Help + "-" + command.Name + ", " + command.desc + "\n";
+			Help = Help + "-" + command.Name + ", " + command.desc + "\n\n";
+		}
+		for(GenericCommandWithUnicodeEmote command: CommandsWithUnicode) {
+			Help = Help + "-" + command.Name + ", " + command.desc + "\n\n";
 		}
 		Help = "```"+Help+"```";
 	}

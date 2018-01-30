@@ -15,5 +15,10 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/trove-3.0.3.jar/trove-3.0.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jar_files (3)/json-20160810.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dami/Downloads/jsoup-1.11.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Dami/Downloads/jsoup-1.11.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

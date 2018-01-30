@@ -20,6 +20,9 @@ public class GenericCommand implements Command{
 		this.Event = Event;
 		this.desc = desc;
 		this.emotelisteners = emotelisteners;
+		if(emotelisteners==null) {
+			this.emotelisteners = new GenericEmoteShellEvent[0];
+		}
 	}
 	
 	public GenericCommand(String Name, GenericEventFunctional Event, String desc) {
@@ -39,6 +42,16 @@ public class GenericCommand implements Command{
 		for(GenericEmoteShellEvent shell:emotelisteners) {
 			CommandManager.emoteevents.add(new GenericEmoteEvent(shell.emote, shell.Event,msg.getId(), shell.collectiveID));
 		}
+	}
+
+	@Override
+	public String getName() {
+		return Name;
+	}
+
+	@Override
+	public String getDescription() {
+		return desc;
 	}
 
 
