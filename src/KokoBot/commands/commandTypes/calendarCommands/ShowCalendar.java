@@ -21,7 +21,7 @@ public class ShowCalendar implements GenericEventFunctional{
 	@Override
 	public Message onEvent(MessageReceivedEvent event) throws IOException {
 		int month = Calendar.getInstance().get(Calendar.MONTH);
-		makeCalendar(month);
+		makeCalendar(month, event.getGuild().getId());
 		Message msg = event.getChannel().sendMessage(CalendarManager.intmonthtostring.get(month) + ":").addFile(new File(KokoBot.path + "Calendar/EventCalendar.png")).complete();
 
 		msg.clearReactions().complete();
@@ -34,17 +34,24 @@ public class ShowCalendar implements GenericEventFunctional{
 	}
 
 	
-	protected void makeCalendar(int month) throws IOException {
+	protected void makeCalendar(int month, String GuildID) throws IOException {
 		BufferedImage large=null;
 	    large = ImageIO.read(new File(KokoBot.path+"Calendar/Calendar.png"));
 
 	    BufferedImage small=null;
 
 	    small = ImageIO.read(new File(KokoBot.path+"Calendar/Circle.png"));
+	    
+	    BufferedImage today = null;
+	    
+	    today = ImageIO.read(new File(KokoBot.path+"Calendar/Today.png"));;
+	    
+	    
 
 	    int w = large.getWidth();
 	    int h = large.getHeight();
 
+	    
 	    BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
 	    
@@ -52,11 +59,16 @@ public class ShowCalendar implements GenericEventFunctional{
 	    
 	    Graphics g = combined.getGraphics();
 	    g.drawImage(large, 0, 0, null);
-	    for(Event Event: CalendarManager.Events) {
+	    Calendar cal = Calendar.getInstance();
+	    System.out.println(10+50*(cal.get(Calendar.DAY_OF_MONTH)-1%7));
+	    System.out.println((int) (20+50*(Math.floor(cal.get(Calendar.DAY_OF_MONTH)-1/7))));
+	    g.drawImage(today, 10+50*(cal.get(Calendar.DAY_OF_MONTH)-1%7), (int) (20+50*(Math.floor(cal.get((Calendar.DAY_OF_MONTH)-1)/7))), null);
+	    
+	    for(Event Event: CalendarManager.Events.get(GuildID)) {
 	    	Calendar calendar = Calendar.getInstance();
 	    	calendar.setTime(Event.date);
 	    	boolean cont = false;
-	    	for(Member member: KokoBot.guild.getMembers()) {
+	    	for(Member member: KokoBot.guild.get(GuildID).getMembers()) {
 				if(Event.message.contains(member.getAsMention())) {cont=true;break;}
 			}
 	    	if(cont) {

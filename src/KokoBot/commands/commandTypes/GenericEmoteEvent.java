@@ -3,17 +3,16 @@ package KokoBot.commands.commandTypes;
 import java.io.IOException;
 import java.util.function.Function;
 
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
 public class GenericEmoteEvent implements EmoteEventFunctional{
 
 	
-	public Emote emote;
+	public EmoteDuality emote;
 	EmoteEventFunctional Event;
 	String messageid;
 	public Function CollectiveID;
-	public GenericEmoteEvent(Emote Emote, EmoteEventFunctional Event, String messageid, Function F) {
+	public GenericEmoteEvent(EmoteDuality Emote, EmoteEventFunctional Event, String messageid, Function F) {
 		this.emote = Emote;
 		this.Event = Event;
 		this.messageid = messageid;
@@ -26,9 +25,17 @@ public class GenericEmoteEvent implements EmoteEventFunctional{
 	
 	
 	public boolean ListenForEmote(MessageReactionAddEvent event) {
-		if((event.getMessageId().equals((CollectiveID.apply("").equals("")?messageid:CollectiveID.apply(""))))&&event.getReaction().getReactionEmote().getEmote()==emote) {
+		String messageid = (CollectiveID.apply(event.getGuild()).equals(null)?this.messageid:(String) CollectiveID.apply(event.getGuild()));
+		boolean rightEmote = false;
+		if(emote.isEmote()) {
+			rightEmote = event.getReaction().getReactionEmote().getEmote()==emote.getEmote();
+		} else {
+			rightEmote = event.getReactionEmote().getName().equals(emote.getEmote());
+		}
+		if(event.getMessageId().equals(messageid) && rightEmote) {
 			return true;
 		}
+		
 		return false;
 	}
 

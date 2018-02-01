@@ -4,6 +4,7 @@ import java.util.List;
 
 import KokoBot.Roles.CategorisedRole;
 import net.dv8tion.jda.core.entities.Emote;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -20,6 +21,13 @@ public class Utilities {
 		return string.split(split)[index];
 	}
 	
+	public static List add(List list, Object obj){
+		 List list2 = list;
+		 list2.add(obj);
+		return list2;
+		
+	}
+	
 	public static String getPaddedSubstringFromMessage(MessageReceivedEvent event, String padder, String defaultstring) {
 		if(Utilities.getMessage(event).contains(padder)) {
 			try {
@@ -32,8 +40,8 @@ public class Utilities {
 		
 	}
 	
-	public static Role getRoleByName(String roleName) {
-		return KokoBot.guild.getRolesByName(roleName, true).get(0);
+	public static Role getRoleByName(String roleName, Guild guild) {
+		return guild.getRolesByName(roleName, true).get(0);
 	}
 	
 	public static Emote getGenericEmoteByName(String emoteName) {
@@ -87,7 +95,7 @@ public class Utilities {
 	
 	
 	public static Member getMember(MessageReceivedEvent event) {
-		return KokoBot.guild.getMember(event.getAuthor());
+		return event.getGuild().getMember(event.getAuthor());
 	}
 	
 	public static Message sendPrivateMessage(MessageReceivedEvent event, String message) {

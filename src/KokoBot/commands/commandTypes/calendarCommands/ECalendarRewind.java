@@ -17,12 +17,12 @@ public class ECalendarRewind extends ShowCalendar implements EmoteEventFunctiona
 		
 		int month = 0;
 		
-		makeCalendar(month);
+		makeCalendar(month, event.getGuild().getId());
 
 		msg.delete().complete();
-		ECalendarForewards.calendarMessageId = event.getChannel().sendMessage(CalendarManager.intmonthtostring.get(month) + ":").addFile(new File(KokoBot.path + "Calendar/EventCalendar.png")).complete().getId();
+		ECalendarForewards.calendarMessageId.put(event.getGuild().getId(), event.getChannel().sendMessage(CalendarManager.intmonthtostring.get(month) + ":").addFile(new File(KokoBot.path + "Calendar/EventCalendar.png")).complete().getId());
 		ECalendarForewards.RefreshRinfoEmotes(event);
-		return ECalendarForewards.calendarMessageId;	
+		return ECalendarForewards.calendarMessageId.get(event.getGuild().getId());	
 		}
 
 }

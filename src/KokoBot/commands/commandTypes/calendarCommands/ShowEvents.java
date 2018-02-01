@@ -16,8 +16,8 @@ public class ShowEvents implements GenericEventFunctional{
 	@Override
 	public Message onEvent(MessageReceivedEvent event) throws IOException {
 		Utilities.sendMessage(event, "There are " + CalendarManager.Events.size() + " Events:");
-		for(Event Event: CalendarManager.Events) {
-			for(Member member: KokoBot.guild.getMembers()) {
+		for(Event Event: CalendarManager.Events.get(event.getGuild().getId())) {
+			for(Member member: KokoBot.guild.get(event.getGuild().getId()).getMembers()) {
 			if(Event.message.contains(member.getAsMention())) {continue;}
 			}
 			String to = "";

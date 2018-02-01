@@ -1,4 +1,4 @@
-package KokoBot.commands.processCommands;
+package KokoBot.commands.commandTypes.processCommands;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,6 +1,7 @@
 package KokoBot.commands.commandTypes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import KokoBot.commands.Command;
 import KokoBot.commands.CommandManager;
@@ -39,8 +40,11 @@ public class GenericCommand implements Command{
 	@Override
 	public void onEvent(MessageReceivedEvent Message) throws IOException {
 		Message msg = Event.onEvent(Message);
+		if(CommandManager.emoteevents.get(Message.getGuild().getId())==null) {
+			CommandManager.emoteevents.put(Message.getGuild().getId(), new ArrayList<GenericEmoteEvent>());
+		}
 		for(GenericEmoteShellEvent shell:emotelisteners) {
-			CommandManager.emoteevents.add(new GenericEmoteEvent(shell.emote, shell.Event,msg.getId(), shell.collectiveID));
+			CommandManager.emoteevents.get(Message.getGuild().getId()).add(new GenericEmoteEvent(shell.emote, shell.Event,msg.getId(), shell.collectiveID));
 		}
 	}
 

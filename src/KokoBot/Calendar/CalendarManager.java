@@ -1,6 +1,7 @@
 package KokoBot.Calendar;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -16,13 +17,16 @@ import java.util.stream.Collectors;
 import KokoBot.FileUtilities;
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class CalendarManager {
 
-	public static HashMap<Integer,String> intmonthtostring = new HashMap<Integer, String>();;
-	public static List<Event> Events = new LinkedList<Event>();
-	public static Map<Object, Object> stringmonthtoint;
-	public static void InitialiseEvents() throws ParseException, IOException {
+	public static HashMap<Integer,String> intmonthtostring = new HashMap<Integer, String>();
+	public static Map<String, Integer> stringmonthtoint;
+	
+	public static Map<String,List<Event>> Events = new HashMap<String,List<Event>>();
+	public static void InitialiseEvents(Guild guild) throws ParseException, IOException {
 		intmonthtostring.put(0, "January");
 		intmonthtostring.put(1, "February");
 		intmonthtostring.put(2, "March");
@@ -38,9 +42,16 @@ public class CalendarManager {
 	    stringmonthtoint = 
 			    CalendarManager.intmonthtostring.entrySet().stream()
 			    .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
-		BufferedReader reader = new BufferedReader(new FileReader(KokoBot.path+"Calendar/Events.txt"));
+	    File file = new File(KokoBot.path+"Calendar/Events/"+guild.getId()+".txt");
+	    
+	    file.createNewFile();
+		BufferedReader reader = new BufferedReader(new FileReader(KokoBot.path+"Calendar/Events/"+guild.getId()+".txt"));
 		Iterator<String> events = reader.lines().iterator();
 		List<String> ActiveEvents = new ArrayList<String>();
+		
+		if(Events.get(guild.getId())==null) {
+			Events.put(guild.getId(), new LinkedList<Event>());
+		}
 		
 		while(events.hasNext()) {
 			String a = events.next();
@@ -48,22 +59,24 @@ public class CalendarManager {
 			if(CalendarManager.DatefromString(Utilities.getPaddedSubstringFromMessage(a, "\'", "")).getTime().after(Calendar.getInstance().getTime())) {
 				ActiveEvents.add(a);
 			}
-			Events.add(Event.fromString(a));
+			Events.put(guild.getId(),Utilities.add(Events.get(guild.getId()), Event.fromString(a)));
+			
 
 		}
 		
 		reader.close();
-		FileUtilities.overrideFile(KokoBot.path + "Calendar/Events.txt", ActiveEvents);
+		FileUtilities.overrideFile(KokoBot.path+"Calendar/Events/"+guild.getId()+".txt", ActiveEvents);
 		
 	}
 	
-	public static void AddEvent(Event event) {
+	public static void AddEvent(Event event, MessageReceivedEvent event2) {
 		try {
-			FileUtilities.addToFile(KokoBot.path+"Calendar/Events.txt", event.toString());
+			FileUtilities.addToFile(KokoBot.path+"Calendar/Events/"+event2.getGuild().getId()+".txt", event.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Events.add(event);
+		Events.put(event2.getGuild().getId(),Utilities.add(Events.get(event2.getGuild().getId()), event));
+		
 	}
 
 	public static Calendar DatefromString(String date) {

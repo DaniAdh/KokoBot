@@ -17,7 +17,7 @@ public class Rdesc implements GenericEventFunctional{
 			return null;
 		}
 		try {
-			return Utilities.sendMessage(event, Utilities.findRoleWithName(KokoBot.roles, Utilities.SplitMessageAndGetIndex(event, " ", 1)).Description);
+			return Utilities.sendMessage(event, Utilities.findRoleWithName(KokoBot.roles.get(event.getGuild().getId()), Utilities.SplitMessageAndGetIndex(event, " ", 1)).Description);
 		}catch(IllegalArgumentException e) {
 			return Utilities.sendMessage(event, "No description found :(, add one using -rcreate");
 		}

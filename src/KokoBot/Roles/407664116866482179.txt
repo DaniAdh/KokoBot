@@ -1,0 +1,5 @@
+Default 'Server Designer' false ""
+Default 'Programmer' false ""
+Default 'Workers' false ""
+Default 'KokoBot' false ""
+Default '@everyone' false ""

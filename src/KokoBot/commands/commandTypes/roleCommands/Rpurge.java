@@ -22,9 +22,9 @@ public class Rpurge implements GenericEventFunctional {
 			return null;
 		}
 		
-		List<Role> roles = KokoBot.guild.getRoles();
+		List<Role> roles = event.getGuild().getRoles();
 		for(Role r:roles) {
-			if(r.getPermissionsRaw()==KokoBot.guild.getPublicRole().getPermissionsRaw()) {
+			if(r.getPermissionsRaw()==event.getGuild().getPublicRole().getPermissionsRaw()) {
 				r.delete().complete();
 			}
 		}
@@ -33,7 +33,7 @@ public class Rpurge implements GenericEventFunctional {
 		BufferedWriter bf = new BufferedWriter(new FileWriter(KokoBot.path,false));
 		bf.write("Test '@everyone' false");
 		bf.close();
-		RoleManager.InitialiseRoles();
+		RoleManager.InitialiseRoles(event.getGuild());
 		return Utilities.sendMessage(event, "Purged!");
 		
 	}

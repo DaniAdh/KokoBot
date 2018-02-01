@@ -1,16 +1,21 @@
 package KokoBot.commands;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
+import KokoBot.commands.commandTypes.EmoteDuality;
 import KokoBot.commands.commandTypes.GenericCommand;
-import KokoBot.commands.commandTypes.GenericCommandWithUnicodeEmote;
 import KokoBot.commands.commandTypes.GenericEmoteEvent;
-import KokoBot.commands.commandTypes.GenericUnicodeEmoteEvent;
-import KokoBot.commands.commandTypes.GenericUnicodeEmoteShellEvent;
+import KokoBot.commands.commandTypes.GenericEmoteShellEvent;
+import KokoBot.commands.commandTypes.NoteCommands.addNote;
+import KokoBot.commands.commandTypes.NoteCommands.nReturn;
 import KokoBot.commands.commandTypes.calendarCommands.AddEvent;
 import KokoBot.commands.commandTypes.calendarCommands.ECalendarBackwards;
 import KokoBot.commands.commandTypes.calendarCommands.ECalendarFastForewards;
@@ -19,6 +24,7 @@ import KokoBot.commands.commandTypes.calendarCommands.ECalendarRewind;
 import KokoBot.commands.commandTypes.calendarCommands.EShowevents;
 import KokoBot.commands.commandTypes.calendarCommands.ShowCalendar;
 import KokoBot.commands.commandTypes.calendarCommands.ShowEvents;
+import KokoBot.commands.commandTypes.processCommands.Subscribe;
 import KokoBot.commands.commandTypes.roleCommands.ErinfoForewards;
 import KokoBot.commands.commandTypes.roleCommands.Radd;
 import KokoBot.commands.commandTypes.roleCommands.Rcategories;
@@ -27,16 +33,15 @@ import KokoBot.commands.commandTypes.roleCommands.Rcreate;
 import KokoBot.commands.commandTypes.roleCommands.Rdesc;
 import KokoBot.commands.commandTypes.roleCommands.Rpurge;
 import KokoBot.commands.commandTypes.roleCommands.help;
-import KokoBot.commands.processCommands.Subscribe;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
 public class CommandManager {
 	
 	private static List<GenericCommand> Commands = new LinkedList<GenericCommand>();
-	private static List<GenericCommandWithUnicodeEmote> CommandsWithUnicode = new LinkedList<GenericCommandWithUnicodeEmote>();
-	public static List<GenericEmoteEvent> emoteevents = new LinkedList<GenericEmoteEvent>();
-	public static List<GenericUnicodeEmoteEvent> unicodeemoteevents = new LinkedList<GenericUnicodeEmoteEvent>();
+	public static Map<String,List<GenericEmoteEvent>> emoteevents = new HashMap<String,List<GenericEmoteEvent>>();
 	
 	public static String Help = "";
 	
@@ -52,12 +57,12 @@ public class CommandManager {
 				"Syntax: -radd <Name>, adds the role <Name> to the user"));
 		Commands.add(new GenericCommand("rcategories", new Rcategories(),
 				"Replies with a list of categories on this server"));
-		CommandsWithUnicode.add(new GenericCommandWithUnicodeEmote("rinfo", new Rcommands(), 
+		Commands.add(new GenericCommand("rinfo", new Rcommands(), 
 				"Syntax: -rinfo, Shows the user a list of roles by category", 
-				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("▶", new ErinfoForewards(), n->"")}));
-		CommandsWithUnicode.add(new GenericCommandWithUnicodeEmote("rsinfo", new Rcommands(),
+				new GenericEmoteShellEvent [] {new GenericEmoteShellEvent(new EmoteDuality("▶",null,false), new ErinfoForewards(), n->"")}));
+		Commands.add(new GenericCommand("rsinfo", new Rcommands(),
 				"Syntax: -rsinfo, Shows the user a list of self-assignable roles by category",
-				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("▶", new ErinfoForewards(), n->"")}));
+				new GenericEmoteShellEvent [] {new GenericEmoteShellEvent(new EmoteDuality("▶",null,false), new ErinfoForewards(), n->"")}));
 		Commands.add(new GenericCommand("rpurge", new Rpurge(), 
 				"Removes all roles with standard privilages from the server"));
 		Commands.add(new GenericCommand("rdesc", new Rdesc(),
@@ -69,22 +74,28 @@ public class CommandManager {
 		
 		Commands.add(new GenericCommand("Events", 
 				new ShowEvents(), "Shows Events"));
-		CommandsWithUnicode.add(new GenericCommandWithUnicodeEmote("Calendar", 
+		Commands.add(new GenericCommand("Calendar", 
 				new ShowCalendar(), "Shows Calendar",
-				new GenericUnicodeEmoteShellEvent [] {new GenericUnicodeEmoteShellEvent("▶", new ECalendarForewards(), n->ECalendarForewards.calendarMessageId), 
-						new GenericUnicodeEmoteShellEvent("⏩", new ECalendarFastForewards(), n->ECalendarForewards.calendarMessageId),
-						new GenericUnicodeEmoteShellEvent("◀", new ECalendarBackwards(), n->ECalendarForewards.calendarMessageId),
-						new GenericUnicodeEmoteShellEvent("⏪", new ECalendarRewind(), n->ECalendarForewards.calendarMessageId),
-						new GenericUnicodeEmoteShellEvent("❗", new EShowevents(), n->ECalendarForewards.calendarMessageId)}));
+				new GenericEmoteShellEvent [] {new GenericEmoteShellEvent(new EmoteDuality("▶",null,false), new ECalendarForewards(), n->ECalendarForewards.calendarMessageId.get(((Guild)n).getId())), 
+						new GenericEmoteShellEvent(new EmoteDuality("⏩",null,false), new ECalendarFastForewards(), n->ECalendarForewards.calendarMessageId.get(((Guild)n).getId())),
+						new GenericEmoteShellEvent(new EmoteDuality("◀",null,false), new ECalendarBackwards(), n->ECalendarForewards.calendarMessageId.get(((Guild)n).getId())),
+						new GenericEmoteShellEvent(new EmoteDuality("⏪",null,false), new ECalendarRewind(), n->ECalendarForewards.calendarMessageId.get(((Guild)n).getId())),
+						new GenericEmoteShellEvent(new EmoteDuality("❗",null,false), new EShowevents(), n->ECalendarForewards.calendarMessageId.get(((Guild)n).getId()))}));
 		Commands.add(new GenericCommand("Subscribe", 
 				new Subscribe(), "Syntax: Subscribe URL \n Where URL is the URL to the videos page of the channel"));
 		
 		Commands.add(new GenericCommand("help", 
 				new help(), "Sends the user a PM containing this message"));
+		
+		Commands.add(new GenericCommand("nAdd", 
+				new addNote(), "Syntax: -nAdd Category \"Note\" rank*\n* means optional, rank determines the priority of the note/which notes should be at the top of the category."));
+		
+		Commands.add(new GenericCommand("nReturn", 
+				new nReturn(), "Syntax: -nReturn Category* \n* means optional, returns all notes in a category."));
+		
+		
+		
 		for(GenericCommand command: Commands) {
-			Help = Help + "-" + command.Name + ", " + command.desc + "\n\n";
-		}
-		for(GenericCommandWithUnicodeEmote command: CommandsWithUnicode) {
 			Help = Help + "-" + command.Name + ", " + command.desc + "\n\n";
 		}
 		Help = "```"+Help+"```";
@@ -100,27 +111,37 @@ public class CommandManager {
 			}
 		}	
 		
-		for(GenericCommandWithUnicodeEmote command:CommandsWithUnicode) {
-			if(command.ListenForEvent(Message.substring(1, Message.length()))) {
-				command.onEvent(MessageEvent);
-			}
-		}
+		
 	}
 	
 	
 	public static void TestForEmotes(MessageReactionAddEvent EmoteEvent) throws IOException {
-		for(GenericEmoteEvent event:emoteevents) {
+		if(emoteevents.get(EmoteEvent.getGuild().getId())==null) {
+			emoteevents.put(EmoteEvent.getGuild().getId(), new ArrayList<GenericEmoteEvent>());
+		}
+		for(GenericEmoteEvent event:emoteevents.get(EmoteEvent.getGuild().getId())) {
 			if(event.ListenForEmote(EmoteEvent)) {
 				event.onEvent(EmoteEvent);
 			}
 		}	
-		for(GenericUnicodeEmoteEvent event:unicodeemoteevents) {
-			if(event.ListenForEmote(EmoteEvent)) {
-				event.onEvent(EmoteEvent);
-			}
-		}
 	}
 	
+	
+	public static void InitialiseNotes(Guild guild) {
+		KokoBot.guildUserPath.put(guild.getId(), new HashMap<String,String>());
+		new File(KokoBot.path+"/commands/notebookbook/"+guild.getId()+"/").mkdir();
+		File[] userNotes = new File(KokoBot.path+"/commands/notebookbook/"+guild.getId()+"/").listFiles();
+		for(Member user:guild.getMembers()) {
+			new File(KokoBot.path+"/commands/notebookbook/"+guild.getId()+"/"+user.getUser().getId()+"/").mkdir();
+		}
+			
+		for(File file: userNotes) {
+			Map<String,String> list2 = KokoBot.guildUserPath.get(guild.getId());
+			list2.put(file.getName(), file.getAbsolutePath());
+			KokoBot.guildUserPath.put(guild.getId(), list2);
+		}
+		
+	}
 	
 	
 	

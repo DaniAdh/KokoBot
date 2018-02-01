@@ -17,7 +17,7 @@ public class Rcategories implements GenericEventFunctional{
 	public Message onEvent(MessageReceivedEvent event) throws IOException {
 		List<String> categories = new ArrayList<String>();
 		
-		for(CategorisedRole role: KokoBot.roles) {
+		for(CategorisedRole role: KokoBot.roles.get(event.getGuild().getId())) {
 			if(!categories.contains(role.Category)) {
 				categories.add(role.Category);
 			}

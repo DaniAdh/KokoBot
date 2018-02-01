@@ -2,6 +2,8 @@ package KokoBot.commands.commandTypes.calendarCommands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import KokoBot.KokoBot;
 import KokoBot.Calendar.CalendarManager;
@@ -13,28 +15,28 @@ public class ECalendarForewards extends ShowCalendar implements EmoteEventFuncti
 
 	
 	public static void RefreshRinfoEmotes(MessageReactionAddEvent event){
-		event.getChannel().getMessageById(calendarMessageId).complete().clearReactions().complete();
-		event.getChannel().getMessageById(calendarMessageId).complete().addReaction("⏪").complete();
-		event.getChannel().getMessageById(calendarMessageId).complete().addReaction("◀").complete();
-		event.getChannel().getMessageById(calendarMessageId).complete().addReaction("▶").complete();
-		event.getChannel().getMessageById(calendarMessageId).complete().addReaction("⏩").complete();
-		event.getChannel().getMessageById(calendarMessageId).complete().addReaction("❗").complete();
+		event.getChannel().getMessageById(calendarMessageId.get(event.getGuild().getId())).complete().clearReactions().complete();
+		event.getChannel().getMessageById(calendarMessageId.get(event.getGuild().getId())).complete().addReaction("⏪").complete();
+		event.getChannel().getMessageById(calendarMessageId.get(event.getGuild().getId())).complete().addReaction("◀").complete();
+		event.getChannel().getMessageById(calendarMessageId.get(event.getGuild().getId())).complete().addReaction("▶").complete();
+		event.getChannel().getMessageById(calendarMessageId.get(event.getGuild().getId())).complete().addReaction("⏩").complete();
+		event.getChannel().getMessageById(calendarMessageId.get(event.getGuild().getId())).complete().addReaction("❗").complete();
 	}
 	
-	public static String calendarMessageId = "";
+	public static Map<String,String> calendarMessageId = new HashMap<String,String>();
 	@Override
 	public String onEvent(MessageReactionAddEvent event) throws IOException, InterruptedException {
 		Message msg = event.getChannel().getMessageById(event.getMessageId()).complete();
 		
 		int month = (int)CalendarManager.stringmonthtoint.get(msg.getContentRaw().replace(":", ""))+1%12;
 		
-		makeCalendar(month);
+		makeCalendar(month, event.getGuild().getId());
 		
 
 		msg.delete().complete();
-		calendarMessageId = event.getChannel().sendMessage(CalendarManager.intmonthtostring.get(month) + ":").addFile(new File(KokoBot.path + "Calendar/EventCalendar.png")).complete().getId();
+		calendarMessageId.put(event.getGuild().getId(), event.getChannel().sendMessage(CalendarManager.intmonthtostring.get(month) + ":").addFile(new File(KokoBot.path + "Calendar/EventCalendar.png")).complete().getId());
 		RefreshRinfoEmotes(event);
-		return calendarMessageId;
+		return calendarMessageId.get(event.getGuild().getId());
 	}
 
 }

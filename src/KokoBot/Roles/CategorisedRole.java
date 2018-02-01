@@ -1,6 +1,6 @@
 package KokoBot.Roles;
 
-import KokoBot.KokoBot;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 
 public class CategorisedRole{
@@ -22,10 +22,10 @@ public class CategorisedRole{
 	}
 	
 	//Category 'Name' isselfassignable "description"
-	public static CategorisedRole fromString(String a) {
+	public static CategorisedRole fromString(String a, Guild guild) {
 		
 		Role foundRole = null;
-		for(Role role:KokoBot.guild.getRoles()) {
+		for(Role role:guild.getRoles()) {
 			if(role.getName().equals(a.split("\'")[1])) {
 				foundRole = role;
 			}

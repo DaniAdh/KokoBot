@@ -13,7 +13,7 @@ public class Radd implements GenericEventFunctional{
 
 	@Override
 	public Message onEvent(MessageReceivedEvent event) throws IOException {
-		CategorisedRole role = Utilities.findRoleWithName(KokoBot.roles, Utilities.SplitMessageAndGetIndex(event, " ", 1));
+		CategorisedRole role = Utilities.findRoleWithName(KokoBot.roles.get(event.getGuild().getId()), Utilities.SplitMessageAndGetIndex(event, " ", 1));
 		
 		if(role==null) {
 			Utilities.sendMessage(event, "Role " + Utilities.SplitMessageAndGetIndex(event, " ", 1) + " does not exist!");
@@ -26,7 +26,7 @@ public class Radd implements GenericEventFunctional{
 		}
 			
 		
-		KokoBot.gc.addSingleRoleToMember(Utilities.getMember(event), role.role).complete();
+		KokoBot.gc.get(event.getGuild().getId()).addSingleRoleToMember(Utilities.getMember(event), role.role).complete();
 		return Utilities.sendMessage(event, "Added Role " + role.getName() + " to " + event.getAuthor().getName());
 	}
 

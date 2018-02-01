@@ -1,6 +1,7 @@
 package KokoBot.Processes.BackgroundProcesses;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,20 +15,23 @@ import KokoBot.FileUtilities;
 import KokoBot.KokoBot;
 import KokoBot.Utilities;
 import KokoBot.Processes.BackgroundProcess;
+import net.dv8tion.jda.core.entities.Guild;
 
 public class CheckForVideos extends BackgroundProcess{
 
-	public CheckForVideos(int timemillis) {
+	private Guild guild;
+	public CheckForVideos(int timemillis, Guild guild) {
 		super(timemillis);
+		this.guild = guild;
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		System.out.println("test");
 		List<String> lines = new ArrayList<String>();
 		try {
-			lines = FileUtilities.getLines(KokoBot.path+"Processes/Subscriptions.txt");
+			new File(KokoBot.path+"Processes/Subscriptions/"+guild.getId()+".txt").createNewFile();
+			lines = FileUtilities.getLines(KokoBot.path+"Processes/Subscriptions/"+guild.getId()+".txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,11 +63,11 @@ public class CheckForVideos extends BackgroundProcess{
 				
 
 				if(!title.equals(oldtitle)) {
-					Utilities.sendMessage(KokoBot.guild.getTextChannelsByName("Videos", true).get(0), "New Video From " + name + "! \n https://www.youtube.com"); //TODO);
-					List<String> newlines = FileUtilities.getLines(KokoBot.path + "Processes/Subscriptions.txt");
+					Utilities.sendMessage(guild.getTextChannelsByName("Videos", true).get(0), "New Video From " + name + "! \n https://www.youtube.com"); //TODO);
+					List<String> newlines = FileUtilities.getLines(KokoBot.path+"Processes/Subscriptions/"+guild.getId()+".txt");
 					newlines.remove(line);
 					newlines.add(line.replace(oldtitle, title));
-					FileUtilities.overrideFile(KokoBot.path + "Processes/Subscriptions.txt", newlines);
+					FileUtilities.overrideFile(KokoBot.path+"Processes/Subscriptions/"+guild.getId()+".txt", newlines);
 				}
 				
 				

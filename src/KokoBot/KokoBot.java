@@ -1,8 +1,10 @@
 package KokoBot;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.security.auth.login.LoginException;
@@ -25,21 +27,21 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.GuildController;
 
 public class KokoBot extends ListenerAdapter{	
-	private static String Token = "";
+	private static String Token = "Mzk4OTQxNzUwMjMzOTIzNTg0.DTKGmw.3Rpmwb5CleechxS2dV3CSstChws";
 	public static JDA jda;
 	public static String Prefix = "-";
 	public static String SelfAssignabilityCharacter = "s";
 	public static String path = String.format("%s/%s", System.getProperty("user.dir"), RoleManager.class.getPackage().getName().replace(".", "/")).substring(0, 26)+"src/KokoBot/";
-	public static Guild guild;
-	public static GuildController gc;
+	public static Map<String,Guild> guild = new HashMap<String,Guild>();
+	public static Map<String,GuildController> gc = new HashMap<String,GuildController>();
+	public static Map<String,Map<String,String>> guildUserPath = new HashMap<String,Map<String,String>>();
 	
-	public static List<CategorisedRole> roles = new LinkedList<CategorisedRole>();
-	public static List<Event> events = new LinkedList<Event>();
+	public static Map<String,List<CategorisedRole>> roles = new HashMap<String,List<CategorisedRole>>();
+	public static Map<String,List<Event>> events = new HashMap<String,List<Event>>();
 	public static List<BackgroundProcess> backgroundProcesses = new LinkedList<BackgroundProcess>();
 	
-	//TODO override roles when making one with the same name
+
 	public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, RateLimitedException, IOException {
-		
 		//Creates an instance of JDA, links with the bot through Token, attaches this class as an event listener
 		jda = new JDABuilder(AccountType.BOT).setToken(Token).addEventListener(new KokoBot()).buildBlocking();
 		
@@ -48,25 +50,28 @@ public class KokoBot extends ListenerAdapter{
 		//Adds commands (Go to class for more detail)
 		CommandManager.InitializeCommands();
 		
-		ProcessManager.InitialiseProcesses();
-
 		
-		try {
-			CalendarManager.InitialiseEvents();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		
-		//Creates Guild instance (Used to make roles on server)
-		guild = jda.getGuildById("398952343435083778");
-		gc = new GuildController(guild);
-		
-		//Writes missing roles to text file and reads from it to get categories and self-assignability
-		RoleManager.InitialiseRoles();
 	}
 	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event){
+		if(guild.get(event.getGuild().getId()) == null) {
+			guild.put(event.getGuild().getId(), event.getGuild());
+			gc.put(event.getGuild().getId(), new GuildController(event.getGuild()));
+		
+			try {
+				CalendarManager.InitialiseEvents(event.getGuild());
+				RoleManager.InitialiseRoles(event.getGuild());
+				ProcessManager.InitialiseProcesses(event.getGuild());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			CommandManager.InitialiseNotes(event.getGuild());
+			
+		}
 		if(event.getAuthor().isBot() || !event.getChannel().getName().equals("bot")) {return;}
 		try {
 			CommandManager.TestForCommands(event);
@@ -76,6 +81,9 @@ public class KokoBot extends ListenerAdapter{
 		
 		
 	}
+	
+
+	
 	
 	@Override
 	public void onMessageReactionAdd(MessageReactionAddEvent event) {

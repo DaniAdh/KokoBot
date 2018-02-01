@@ -36,7 +36,7 @@ public class AddEvent  implements GenericEventFunctional{
 		MessageChannel channel = event.getChannel();
 		boolean touser = who.toUpperCase().equals("ME");
 		//AddEvent "Message" <Name/me/everybody> X hours/X minutes/XX:XX later/ dd/MM XX:XX / XX:XX / dd/MM
-		if(!touser && !KokoBot.guild.getMembersWithRoles(Utilities.findRoleWithName(KokoBot.roles, "Event Manager").role).contains(Utilities.getMember(event))) {
+		if(!touser && !event.getGuild().getMembersWithRoles(Utilities.findRoleWithName(KokoBot.roles.get(event.getGuild().getId()), "Event Manager").role).contains(Utilities.getMember(event))) {
 			Utilities.sendMessage(event, ("You do not have the \"Event Manager\" role!"));
 			return null;
 		}
@@ -55,13 +55,13 @@ public class AddEvent  implements GenericEventFunctional{
 			mention = event.getAuthor().getAsMention();
 		}
 		if(who=="everybody") {
-			mention = Utilities.getRoleByName("@everybody").getAsMention();
+			mention = Utilities.getRoleByName("@everybody", event.getGuild()).getAsMention();
 		}
 		if(who.contains("Role:")) {
-			mention = Utilities.getRoleByName(who.split("Role:")[1]).getAsMention();
+			mention = Utilities.getRoleByName(who.split("Role:")[1], event.getGuild()).getAsMention();
 		}
 		
-		CalendarManager.AddEvent(new Event(mention + "§" + message, cal.getTime(), channel));
+		CalendarManager.AddEvent(new Event(mention + "§" + message, cal.getTime(), channel, event.getGuild()),event);
 		
 		
 		if(touser) {who=event.getAuthor().getName();}
